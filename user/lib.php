@@ -1401,3 +1401,22 @@ function user_edit_map_field_purpose($userid, $fieldname) {
     return $purpose;
 }
 
+/**
+ * UP1 return the editing teachers for a course
+ *
+ * @param integer $courseId
+ * @return objet result of the query
+ */
+function user_get_editing_teachers($courseid) {
+    global $DB;
+
+    $sqlparams['courseid'] = $courseid;
+    $result = $DB->get_records_sql("SELECT u.id
+        FROM {role_assignments} ra
+        INNER JOIN {context} con ON ra.contextid = con.id
+        INNER JOIN {course} cor ON con.instanceid=cor.id
+        inner join {user} u ON u.id=ra.userid
+        WHERE roleid=3
+        AND cor.id = :courseid", $sqlparams);
+    return $result;
+}

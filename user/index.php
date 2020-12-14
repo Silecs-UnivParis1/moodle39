@@ -325,6 +325,7 @@ if ($bulkoperations) {
     echo '<div class="d-none" data-region="state-help-icon">' . $OUTPUT->help_icon('publishstate', 'notes') . '</div>';
     echo '</div></div></div>';
 
+    $bulkoptions->editingTeachers = user_get_editing_teachers($course->id);
     $bulkoptions->noteStateNames = note_get_state_names();
 }
 echo '</form>';
