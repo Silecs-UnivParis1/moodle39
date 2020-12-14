@@ -137,7 +137,7 @@ class block_navigation_renderer extends plugin_renderer_base {
             if ($isbranch) {
                 $pattr['class'][] = 'branch';
                 $liattr['class'][] = 'contains_branch';
-                $pattr += ['aria-expanded' => ($item->has_children() && (!$item->forceopen || $item->collapse)) ? "false" : "true"];
+                $pattr += ['aria-expanded' => ($item->type === 1) ? "true": "false" ];
                 if ($item->requiresajaxloading) {
                     $pattr += [
                         'data-requires-ajax' => 'true',
