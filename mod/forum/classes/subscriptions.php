@@ -467,8 +467,35 @@ class subscriptions {
         $info = new \core_availability\info_module($modinfo->get_cm($cm->id));
         $results = $info->filter_user_list($results);
 
-        return $results;
+        // UP1  add editing teacher to the list
+        $resultsEditTeacher = \mod_forum\subscriptions::fetch_forum_editing_teacher($forum->id, $fields);
+        $finalResult = array_merge( $results, $resultsEditTeacher );
+        return $finalResult;
     }
+
+    /**
+     * Retrieve the teachers data for the specified forum.
+     *
+     * This is returned as an array of discussions for that forum which contain the preference in a stdClass.
+     *
+     * @param int $forumid The forum to retrieve a cache for
+     * @params array  $fields the fields to get back
+     * @return array of stdClass objects with all the editing teacher for this forum.
+     */
+    public function fetch_forum_editing_teacher($forumid,  $fields){
+       global $CFG, $DB;
+        $params['forumid'] =$forumid;
+        $sql = "SELECT $fields
+                FROM {user} u
+                INNER JOIN {role_assignments} ra ON u.id=ra.userid
+                INNER JOIN {forum_subscriptions} fs ON u.id=fs.userid
+                INNER JOIN {forum} fo ON fo.id=fs.forum
+                WHERE roleid=3 AND forum= :forumid
+            GROUP BY fo.id ";
+        $results2 = $DB->get_records_sql($sql, $params);
+        return $results2;
+    }
+
 
     /**
      * Retrieve the discussion subscription data for the specified userid and forum.
