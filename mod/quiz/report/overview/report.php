@@ -114,6 +114,7 @@ class quiz_overview_report extends quiz_attempts_report {
             // Print the display options.
             $this->form->display();
         }
+        echo '<a href="'.$CFG->wwwroot.'/mod/quiz/report_admin.php?quizid='.$quiz->id.'" /> Rapport personnalisé </a >';
 
         $hasstudents = $hasstudents && (!$currentgroup || $this->hasgroupstudents);
         if ($hasquestions && ($hasstudents || $options->attempts == self::ALL_WITH)) {
