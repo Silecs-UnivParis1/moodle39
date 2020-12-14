@@ -154,7 +154,7 @@ class user_picture implements renderable {
      * TEXT columns because it would break SELECT DISTINCT in MSSQL and ORACLE)
      */
     protected static $fields = array('id', 'picture', 'firstname', 'lastname', 'firstnamephonetic', 'lastnamephonetic',
-            'middlename', 'alternatename', 'imagealt', 'email');
+            'middlename', 'alternatename', 'imagealt', 'email', 'username');
 
     /**
      * @var stdClass A user object with at least fields all columns specified
@@ -369,6 +369,13 @@ class user_picture implements renderable {
             $filename = 'f2';
             $size = (int)$this->size;
         }
+
+        $pictureUid = explode("@", $this->user->username)[0];
+        $url = "https://userphoto.univ-paris1.fr/?&penpalAffiliation=loggedUser&uid=" . $pictureUid;
+        $defaulturl = new moodle_url($url, ['s' => $size, 'd' => $url]);
+        return $defaulturl;
+
+        // GA2020. Tout le code suivant est inutile pour Paris 1.
 
         $defaulturl = $renderer->image_url('u/'.$filename); // default image
 
